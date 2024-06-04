@@ -1,0 +1,23 @@
+﻿
+@page
+@model ScientistInfoWeb.Pages.ScientistModel
+
+<h1>Scientist Information</h1>
+
+<form method="get">
+    <div>
+        <label for="ScientistName">Enter Scientist Name:</label>
+        <input type="text" id="ScientistName" name="ScientistName" value="@Model.ScientistName" />
+        <button type="submit">Search</button>
+    </div>
+</form>
+
+@if (Model.ScientistInfo != null)
+{
+    <h2>@Model.ScientistInfo.Name</h2>
+    <p>@Model.ScientistInfo.Affiliation</p>
+}
+else if (!string.IsNullOrEmpty(Model.ScientistName))
+{
+    <p>Scientist not found or information unavailable.</p>
+}
