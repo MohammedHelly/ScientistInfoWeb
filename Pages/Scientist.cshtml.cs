@@ -10,21 +10,24 @@ namespace ScientistInfoWeb.Pages
   {
     [BindProperty(SupportsGet = true)]
     public string ScientistName { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public int Start { get; set; } = 0;
+
     public List<ScientistInfo> ScientistInfoList { get; set; }
-    public int CurrentPage { get; set; } = 1;
+    public int CurrentPage { get; set; }
     public int TotalPages { get; set; }
     public int TotalRecords { get; set; }
-    public int PageSize { get; set; } = 5;
+    public int PageSize { get; set; } = 10;
 
-    public async Task OnGetAsync(int page = 1)
+    public async Task OnGetAsync()
     {
       if (!string.IsNullOrEmpty(ScientistName))
       {
-        CurrentPage = page;
-        var start = (CurrentPage - 1) * PageSize;
-        var result = await ScientistScraper.GetScientistInfo(ScientistName, start, PageSize);
-        ScientistInfoList = result.Results;
-        TotalRecords = result.TotalRecords;
+        CurrentPage = (Start / PageSize) + 1;
+        var (results, totalRecords) = await ScientistScraper.GetScientistInfo(ScientistName, Start, PageSize, "0,5");
+        ScientistInfoList = results;
+        TotalRecords = totalRecords;
         TotalPages = (int)Math.Ceiling((double)TotalRecords / PageSize);
       }
     }
