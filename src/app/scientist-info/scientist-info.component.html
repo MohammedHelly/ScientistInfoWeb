@@ -1,0 +1,28 @@
+<div class="container mt-5">
+  <h1 class="mb-4">Scientist Information</h1>
+
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" [(ngModel)]="scientistName" placeholder="Enter scientist name">
+    <button class="btn btn-primary" (click)="getScientistInfo()" [disabled]="loading">
+      {{ loading ? 'Loading...' : 'Get Scientist Info' }}
+    </button>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <div *ngIf="scientistInfos.length > 0 && !loading">
+    <div *ngFor="let info of scientistInfos" class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title"><a [href]="info.link" target="_blank">{{ info.title }}</a></h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ info.authorInfo }}</h6>
+        <p class="card-text">{{ info.snippet }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && scientistInfos.length === 0 && !error" class="alert alert-info" role="alert">
+    No results found for "{{ scientistName }}".
+  </div>
+</div>
