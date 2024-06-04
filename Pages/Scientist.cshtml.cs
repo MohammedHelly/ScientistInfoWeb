@@ -12,7 +12,7 @@ namespace ScientistInfoWeb.Pages
 
         public async Task OnGetAsync()
         {
-            ScientistName = "Albert Einstein";
+            //ScientistName = "Albert Einstein";
             if (!string.IsNullOrEmpty(ScientistName))
             {
                 ScientistInfoList = await ScientistScraper.GetScientistInfo(ScientistName);

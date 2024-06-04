@@ -11,7 +11,7 @@ namespace ScientistInfoWeb // Namespace declaration
 
         public static async Task<List<ScientistInfo>> GetScientistInfo(string scientistName)
         {
-            scientistName = "Albert Einstein";
+           // scientistName = "Albert Einstein";
             string baseUrl = $"https://scholar.google.com/scholar?hl=en&q={scientistName}";
             HttpResponseMessage response = await _client.GetAsync(baseUrl);
             string htmlContent = await response.Content.ReadAsStringAsync();
