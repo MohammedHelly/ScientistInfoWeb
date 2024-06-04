@@ -1,5 +1,4 @@
-﻿
-@page
+﻿@page
 @model ScientistInfoWeb.Pages.ScientistModel
 
 <h1>Scientist Information</h1>
@@ -12,10 +11,18 @@
     </div>
 </form>
 
-@if (Model.ScientistInfo != null)
+@if (Model.ScientistInfoList != null && Model.ScientistInfoList.Count > 0)
 {
-    <h2>@Model.ScientistInfo.Name</h2>
-    <p>@Model.ScientistInfo.Affiliation</p>
+    <h2>Results for "@Model.ScientistName"</h2>
+    @foreach (var info in Model.ScientistInfoList)
+    {
+        <div class="result">
+            <h3><a href="@info.Link" target="_blank">@info.Title</a></h3>
+            <p><strong>Author Info:</strong> @info.AuthorInfo</p>
+            <p><strong>Snippet:</strong> @info.Snippet</p>
+            <hr />
+        </div>
+    }
 }
 else if (!string.IsNullOrEmpty(Model.ScientistName))
 {

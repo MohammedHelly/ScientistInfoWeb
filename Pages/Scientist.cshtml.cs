@@ -8,14 +8,14 @@ namespace ScientistInfoWeb.Pages
     {
         [BindProperty(SupportsGet = true)] // Allow getting the name from the query string
         public string ScientistName { get; set; }
-
-        public ScientistInfo ScientistInfo { get; set; }
+        public List<ScientistInfo> ScientistInfoList { get; set; }
 
         public async Task OnGetAsync()
         {
+            ScientistName = "Albert Einstein";
             if (!string.IsNullOrEmpty(ScientistName))
             {
-                ScientistInfo = await ScientistScraper.GetScientistInfo(ScientistName);
+                ScientistInfoList = await ScientistScraper.GetScientistInfo(ScientistName);
             }
         }
     }
