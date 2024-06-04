@@ -94,49 +94,42 @@ namespace ScientistInfoWeb
       doc.LoadHtml(htmlContent);
 
       var resultNodes = doc.DocumentNode.SelectNodes("//div[@class='gs_r gs_or gs_scl']");
-      if (resultNodes == null)
-      {
-        return (new List<ScientistInfo>(), 0);
-      }
-
       var results = new List<ScientistInfo>();
 
-      foreach (var result in resultNodes)
+      if (resultNodes != null)
       {
-        // Extract the title
-        var titleNode = result.SelectSingleNode(".//h3[@class='gs_rt']/a");
-        string title = titleNode?.InnerText.Trim() ?? "No title available";
-
-        // Extract the author and publication info
-        var authorNode = result.SelectSingleNode(".//div[@class='gs_a']");
-        string authorInfo = authorNode?.InnerText.Trim() ?? "No author information available";
-
-        // Extract the snippet
-        var snippetNode = result.SelectSingleNode(".//div[@class='gs_rs']");
-        string snippet = snippetNode?.InnerText.Trim() ?? "No snippet available";
-
-        // Extract the link
-        string link = titleNode?.GetAttributeValue("href", "No link available");
-
-        results.Add(new ScientistInfo
+        foreach (var result in resultNodes)
         {
-          Title = title,
-          AuthorInfo = authorInfo,
-          Snippet = snippet,
-          Link = link
-        });
+          var titleNode = result.SelectSingleNode(".//h3[@class='gs_rt']/a");
+          string title = titleNode?.InnerText.Trim() ?? "No title available";
+
+          var authorNode = result.SelectSingleNode(".//div[@class='gs_a']");
+          string authorInfo = authorNode?.InnerText.Trim() ?? "No author information available";
+
+          var snippetNode = result.SelectSingleNode(".//div[@class='gs_rs']");
+          string snippet = snippetNode?.InnerText.Trim() ?? "No snippet available";
+
+          string link = titleNode?.GetAttributeValue("href", "No link available");
+
+          results.Add(new ScientistInfo
+          {
+            Title = title,
+            AuthorInfo = authorInfo,
+            Snippet = snippet,
+            Link = link
+          });
+        }
       }
 
-      // Extract total number of results
       var totalResultsNode = doc.DocumentNode.SelectSingleNode("//div[@id='gs_ab_md']/div[@class='gs_ab_mdw']");
       int totalRecords = 0;
       if (totalResultsNode != null)
       {
         var totalText = totalResultsNode.InnerText;
-        var match = Regex.Match(totalText, @"\d+");
+        var match = Regex.Match(totalText, @"\d{1,3}(,\d{3})*(\.\d+)?");
         if (match.Success)
         {
-          totalRecords = int.Parse(match.Value);
+          totalRecords = int.Parse(match.Value.Replace(",", ""));
         }
       }
 
